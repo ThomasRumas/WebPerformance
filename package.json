@@ -1,0 +1,15 @@
+{
+  "name": "webperformance",
+  "version": "1.0.0",
+  "description": "A tool with speedtest.io to check on developpment performance of web pages",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Thomas Rumas",
+  "license": "ISC",
+  "dependencies": {
+    "prompt": "^1.0.0",
+    "sitespeed.io": "^7.3.6"
+  }
+}
