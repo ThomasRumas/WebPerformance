@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "prompt": "^1.0.0",
-    "sitespeed.io": "^7.3.6"
+    "sitespeed.io": "^7.3.6", 
+    "@sitespeed.io/throttle": "^0.4.2",
+    "chartist": "^0.11.0"
   }
 }
