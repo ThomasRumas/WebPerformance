@@ -1,8 +1,14 @@
 "use strict"; 
+//Global ressources
+const fs = require('fs'); 
 
 //Sitespeed ressources
 const sitespeed = require('sitespeed.io/lib/sitespeed');
 const throttle = require('@sitespeed.io/throttle');
+
+//To get information from HAR
+const pathToData = require('sitespeed.io/lib/core/resultsStorage/pathToFolder');
+const pagexray = require('pagexray');
 
 //Webpagetest API default value
 var urlWebPageTest = "http://localhost:4000"; 
@@ -45,17 +51,19 @@ prompt.start();
 
 //Because traffic control doesn't work on win32 system
 if(OS === "win32") {
-    prompt.get(['url', 'browser', 'iterations', 'webpagetest', 'script', 'useragent'], (err, result) => {     
-        sitespeed.run(generateOptions(result)).then((resultTest) => {
-            console.log(`The test is done, go to ${__dirname}${resultFolder}/index.html to see results`); 
+    prompt.get(['url', 'browser', 'iterations', 'webpagetest', 'script', 'useragent'], (err, promptResult) => { 
+        let urlTested = promptResult.url;     
+        sitespeed.run(generateOptions(promptResult)).then((result) => {
+            console.log(`The test is done, go to ${__dirname}${resultFolder}/index.html to see results`);  
+            sendInformationToApi(urlTested); 
         });
     }); 
 } else {
-    prompt.get(['url', 'browser', 'iterations', 'bandwidth', 'webpagetest', 'script', 'useragent'], (err, result) => {
+    prompt.get(['url', 'browser', 'iterations', 'bandwidth', 'webpagetest', 'script', 'useragent'], (err, promptResult) => {
         var bandwidth = result.bandwidth == "" ? "cable" : result.bandwidth; 
 
         throttle.start({up:network[bandwidth].up, down:network[bandwidth].down, rtt:network[bandwidth].rtt}).then(() => {
-            sitespeed.run(generateOptions(result)).then((resultTest) => {
+            sitespeed.run(generateOptions(result)).then((result) => {
                 console.log(`The test is done, go to ${__dirname}${resultFolder}/index.html to see results`); 
             });
         })
@@ -82,8 +90,7 @@ function generateOptions(result) {
     let prmBrowser = result.browser == "" ? "chrome" : result.browser; 
     let prmIterations = result.iterations == "" ? 3 : parseInt(result.iterations); 
     let prmFile = result.file == "" ? "" : result.file; 
-    //LAN because of Windows and Mac OS X, name we give on our builded docker image
-    let prmConnectivity = result.bandwidth == "" || result.bandwidth === undefined ? "LAN" : result.bandwidth;  
+    let prmConnectivity = result.bandwidth == "" || result.bandwidth === undefined ? "LAN" : result.bandwidth; //LAN because of Windows and Mac OS X, name we give on our builded docker image
     let prmUserAgent = result.useragent == "" || result.useragent === undefined ? "" : result.useragent; 
     urlWebPageTest = result.webpagetest; 
 
@@ -111,5 +118,19 @@ function generateOptions(result) {
             file: prmFile
         }
     });
+}
+
+function generateJsonFromHar(pathToData, file) {
+    let har = fs.readFileSync(`${pathToData}/data/${file}`, 'utf8', (err, data) => {
+        if(err) throw err; 
+        return data; 
+    }); 
+
+    return pagexray.convert(JSON.parse(har));
+}
+
+function sendInformationToApi(urlTested){
+    let browsertime = generateJsonFromHar(`${__dirname}${resultFolder}/${pathToData(urlTested)}`, 'browsertime.har'); 
+    let webpagetest = generateJsonFromHar(`${__dirname}${resultFolder}/${pathToData(urlTested)}`, 'webpagetest.har'); 
 }
 
