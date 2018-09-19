@@ -45,3 +45,6 @@ elif [ "$(expr substr $(uname -s) 1 10)" == "MSYS_NT-10" ]; then
 fi
 
 echo "You can now go on http://localhost:$port and perform WebPageTest"; 
+
+echo "Run Grafana and Grafite instance"; 
+docker-compose up -d; 

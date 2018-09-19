@@ -111,10 +111,9 @@ function generateOptions(result) {
             file: prmFile
         },
         graphite: {
-            host: "http://localhost",
+            host: "localhost",
             auth: "sitespeedio:hdeAga76VG6ga7plZ1", 
-            port: 2003,
-            namespace: "leroymerlin",
+            port: 2003
         }
     });
 }
