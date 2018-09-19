@@ -44,4 +44,4 @@ elif [ "$(expr substr $(uname -s) 1 10)" == "MSYS_NT-10" ]; then
     docker run -d --rm --network="host" -e "SERVER_URL=http://localhost:$port/work/" -e "LOCATION=Test" -e "SHAPER=none" --cap-add="NET_ADMIN" webpagetest/agent; 
 fi
 
-echo "You can now go on http://localhost:$port and perform web performance test"; 
+echo "You can now go on http://localhost:$port and perform WebPageTest"; 
