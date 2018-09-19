@@ -43,6 +43,8 @@ If you want to have more connectivities, be free to modify the network object in
 
 When test is done, your prompt will return you the location to go to check the result of your test. 
 
+*Update* : Now a server version exist with `server.js` file, to launch it, `node .\server.js --url=https://example.com --browser=chrome --iterations=3 --webpagetest=http://localhost:4000  --bandwidth=cable`
+
 #### Made with love and fun <3
 
 

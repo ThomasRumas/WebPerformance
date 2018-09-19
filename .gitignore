@@ -61,7 +61,7 @@ typings/
 .next
 
 # result from sitespeed.io 
-result-*
+sitespeed-result
 
 # vscode files 
 .vscode

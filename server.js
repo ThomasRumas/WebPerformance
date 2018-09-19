@@ -6,8 +6,8 @@ const throttle = require('@sitespeed.io/throttle');
 //Webpagetest API default value
 var urlWebPageTest = "http://localhost:4000"; 
 
-//Prompt ressources to ask users parameters 
-const prompt = require('prompt'); 
+//Argument from nodeJS 
+const argv = require('minimist')(process.argv.slice(2));
 
 const resultFolder = `/sitespeed-result/${getFormattedDate()}-`; 
 const OS = process.platform;
@@ -40,27 +40,21 @@ const network = {
     }
 }
 
-prompt.start(); 
-
 //Because traffic control doesn't work on win32 system
-if(OS === "win32") {
-    prompt.get(['url', 'browser', 'iterations', 'webpagetest', 'script', 'useragent'], (err, promptResult) => {   
-        sitespeed.run(generateOptions(promptResult)).then((result) => {
-            console.log(`The test is done, go to ${__dirname}${resultFolder}/index.html to see results`);  
-        });
-    }); 
+if(OS === "win32") {  
+    sitespeed.run(generateOptions(argv)).then((result) => {
+        console.log(`The test is done, go to ${__dirname}${resultFolder}/index.html to see results`);  
+    });
 } else {
-    prompt.get(['url', 'browser', 'iterations', 'bandwidth', 'webpagetest', 'script', 'useragent'], (err, promptResult) => {
-        var bandwidth = result.bandwidth == "" ? "cable" : result.bandwidth; 
+    var bandwidth = argv.bandwidth == "" ? "cable" : argv.bandwidth; 
 
-        throttle.start({up:network[bandwidth].up, down:network[bandwidth].down, rtt:network[bandwidth].rtt}).then(() => {
-            sitespeed.run(generateOptions(promptResult)).then((result) => {
-                console.log(`The test is done, go to ${__dirname}${resultFolder}/index.html to see results`); 
-            });
-        })
-        .catch((error) => {
-            console.log(error); 
+    throttle.start({up:network[bandwidth].up, down:network[bandwidth].down, rtt:network[bandwidth].rtt}).then(() => {
+        sitespeed.run(generateOptions(argv)).then((result) => {
+            console.log(`The test is done, go to ${__dirname}${resultFolder}/index.html to see results`); 
         });
+    })
+    .catch((error) => {
+        console.log(error); 
     });
 }
 
