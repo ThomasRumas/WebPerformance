@@ -78,7 +78,7 @@ function generateOptions(result) {
     let prmConnectivity = result.bandwidth == "" || result.bandwidth === undefined ? "LAN" : result.bandwidth; //LAN because of Windows and Mac OS X, name we give on our builded docker image
     let prmUserAgent = result.useragent == "" || result.useragent === undefined ? "" : result.useragent; 
     urlWebPageTest = result.webpagetest; 
-    let formatedUrl = prmUrl.replace(/(^\w+:|^)\/\//, '');; 
+    prmUrl.replace(/(^\w+:|^)\/\//, ''); 
 
     return ({
         urls: [prmUrl], 

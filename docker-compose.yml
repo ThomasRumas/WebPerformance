@@ -24,13 +24,12 @@ services:
         - "8080:80"
       restart: always
       volumes:
-        - whisper:/opt/graphite/storage/whisper
-        # In production you should configure/map these to your container
-        # Download from https://github.com/sitespeedio/sitespeed.io/tree/master/docker/graphite
-        #- ./graphite/graphite.db:/opt/graphite/storage/graphite.db
-        #- ./graphite/conf/storage-schemas.conf:/opt/graphite/conf/storage-schemas.conf
-        #- ./graphite/conf/storage-aggregation.conf:/opt/graphite/conf/storage-aggregation.conf
-        #- ./graphite/conf/carbon.conf:/opt/graphite/conf/carbon.conf
+        #- .htpasswd:/etc/nginx/.htpasswd
+        - ./graphite/storage/whisper:/opt/graphite/storage/whisper
+        - ./graphite/graphite.db:/opt/graphite/storage/graphite.db
+        - ./graphite/conf/storage-schemas.conf:/opt/graphite/conf/storage-schemas.conf
+        - ./graphite/conf/storage-aggregation.conf:/opt/graphite/conf/storage-aggregation.conf
+        - ./graphite/conf/carbon.conf:/opt/graphite/conf/carbon.conf
     grafana-setup:
       image: sitespeedio/grafana-bootstrap:7.0
       links:
