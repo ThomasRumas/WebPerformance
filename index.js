@@ -89,6 +89,8 @@ function generateOptions(result) {
     return ({
         urls: [prmUrl], 
         outputFolder: __dirname + resultFolder + formatedUrl,
+        debug: true,
+        verbose: 'vvv',
         browsertime: {
             browser: prmBrowser,
             connectivity: prmConnectivity,

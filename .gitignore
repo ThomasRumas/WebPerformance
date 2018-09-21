@@ -65,3 +65,6 @@ sitespeed-result
 
 # vscode files 
 .vscode
+
+# ignore data from graphite.db 
+graphite/storage/whisper

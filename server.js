@@ -43,14 +43,14 @@ const network = {
 //Because traffic control doesn't work on win32 system
 if(OS === "win32") {  
     sitespeed.run(generateOptions(argv)).then((result) => {
-        console.log(`The test is done, go to ${__dirname}${resultFolder}/index.html to see results`);  
+        console.log(`The test is done, go to ${__dirname}${resultFolder}${argv.url.replace(/(^\w+:|^)\/\//, '')}/index.html to see results`);  
     });
 } else {
     var bandwidth = argv.bandwidth == "" ? "cable" : argv.bandwidth; 
 
     throttle.start({up:network[bandwidth].up, down:network[bandwidth].down, rtt:network[bandwidth].rtt}).then(() => {
         sitespeed.run(generateOptions(argv)).then((result) => {
-            console.log(`The test is done, go to ${__dirname}${resultFolder}/index.html to see results`); 
+            console.log(`The test is done, go to ${__dirname}${resultFolder}${argv.url.replace(/(^\w+:|^)\/\//, '')}/index.html to see results`); 
         });
     })
     .catch((error) => {
@@ -78,11 +78,13 @@ function generateOptions(result) {
     let prmConnectivity = result.bandwidth == "" || result.bandwidth === undefined ? "LAN" : result.bandwidth; //LAN because of Windows and Mac OS X, name we give on our builded docker image
     let prmUserAgent = result.useragent == "" || result.useragent === undefined ? "" : result.useragent; 
     urlWebPageTest = result.webpagetest; 
-    prmUrl.replace(/(^\w+:|^)\/\//, ''); 
+    let formatedUrl = prmUrl.replace(/(^\w+:|^)\/\//, ''); 
 
     return ({
         urls: [prmUrl], 
         outputFolder: __dirname + resultFolder + formatedUrl,
+        debug: true,
+        verbose: 'vvv',
         browsertime: {
             browser: prmBrowser,
             connectivity: prmConnectivity,

@@ -7,6 +7,7 @@
  - NPM (>= v5.6.0)
  - Linux (recommended), Mac OS X or Windows
  - Firefox and/or Chrome
+ - You also need to install this requirements : https://github.com/WPO-Foundation/visualmetrics
 
 ### This repository contains two programs : 
 
