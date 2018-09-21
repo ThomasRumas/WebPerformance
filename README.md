@@ -12,12 +12,13 @@
 ### This repository contains two programs : 
 
  - A bash script to launch a Webpagetest server docker container and a Webpagetest agent docker
- - A NodeJS program which use [sitespeed.io](http://sitespeed.io/) 
+ - A NodeJS program which use [sitespeed.io](http://sitespeed.io/) or an official docker sitespeed.io image
 
 ### Theses programs can be run separately : 
 
  - `sh script.sh` to launch the Webpagetest docker container
  - `node index.js` to launch a speedtest.io test
+ - `docker run --shm-size=1g --rm -v "$(pwd)":/sitespeed.io sitespeedio/sitespeed.io:7.4.0 https://www.leroymerlin.fr --browsertime.connectivity.profile=cable --browsertime.browser=chrome --browsertime.iterations=3 --graphite.host=IpOrHostnameGraphite --webpagetest.host=http://ipOrHostnameWebPageTest:4000 --webpagetest.location=Test --webpagetest.connectivity=cable --webpagetest.run=3` see full documentation to possible [environnement variable](https://www.sitespeed.io/documentation/sitespeed.io/configuration/#the-options)
 
 ---
 ### Webpagetest script
@@ -45,6 +46,12 @@ If you want to have more connectivities, be free to modify the network object in
 When test is done, your prompt will return you the location to go to check the result of your test. 
 
 *Update* : Now a server version exist with `server.js` file, to launch it, `node .\server.js --url=https://example.com --browser=chrome --iterations=3 --webpagetest=http://localhost:4000  --bandwidth=cable`
+
+*Update* : If you prefer to launch this tool with docker, this is how to use it : 
+
+Run in Docker (on Linux)
+Make sure to run sudo modprobe ifb numifbs=1 before you start the container.
+And then when you actually start your Docker container, give it the right privileges with --cap-add=NET_ADMIN
 
 #### Made with love and fun <3
 

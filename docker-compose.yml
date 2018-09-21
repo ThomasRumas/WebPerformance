@@ -24,7 +24,7 @@ services:
         - "8080:80"
       restart: always
       volumes:
-        #- .htpasswd:/etc/nginx/.htpasswd
+        #- .htpasswd:/etc/nginx/.htpasswd //To modify Nginx password
         - ./graphite/storage/whisper:/opt/graphite/storage/whisper
         - ./graphite/graphite.db:/opt/graphite/storage/graphite.db
         - ./graphite/conf/storage-schemas.conf:/opt/graphite/conf/storage-schemas.conf
